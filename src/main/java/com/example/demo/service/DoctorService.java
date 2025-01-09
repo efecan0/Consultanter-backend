@@ -72,7 +72,9 @@ public class DoctorService {
         Case dbCase = caseRepository.findById(caseId).orElseThrow(() -> new RuntimeException("There is no file case."));
 
         if(dbCase.getDoctor().getId() == sessionId){
-            BeanUtils.copyProperties(caseDiagnosisDtoIU,dbCase);
+            dbCase.setSummaryDiagnosis(caseDiagnosisDtoIU.getSummaryDiagnosis());
+            dbCase.setDetailedDiagnosis(caseDiagnosisDtoIU.getDetailedDiagnosis());
+            dbCase.setMeetingDate(caseDiagnosisDtoIU.getMeetingDate());
             caseRepository.save(dbCase);
             return;
         }

@@ -47,8 +47,6 @@ public class DoctorWebSocketController {
         return new WebSocketDoctorResponse(returnId);
     }
 
-
-
     @Scheduled(fixedRate = 300000)
     public void sendPatientFiles() {
         List<WebSocketDepartmentTemporaryFileDTO> temporaryFiles = temporaryFileService.getTemporaryFilesWithNotNullDepartment();

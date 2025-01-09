@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +15,5 @@ public class CaseDiagnosisDtoIU {
 
     private String detailedDiagnosis;
 
-    private LocalDate date;
+    private Date meetingDate;
 }

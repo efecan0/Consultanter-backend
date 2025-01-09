@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -58,6 +59,8 @@ public class Case {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_id")
     private Rate rate;
+
+    private Date meetingDate;
 
     private boolean closure;
 
