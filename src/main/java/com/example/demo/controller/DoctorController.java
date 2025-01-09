@@ -103,7 +103,6 @@ public class DoctorController {
         response.put("success" , true);
         response.put("message" , "tanı koyma işlemi başarılı.");
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
 

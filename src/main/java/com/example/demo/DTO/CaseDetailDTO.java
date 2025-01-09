@@ -31,6 +31,8 @@ public class CaseDetailDTO {
 
     private String detailedDiagnosis;
 
+    private boolean requiresSecondOpinion;
+
     private List<FileDocumentDTO> documents;
 
 }

@@ -3,9 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
@@ -14,17 +12,19 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "\"case\"")
 public class Case {
 
     @Id
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private User patient;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="doctor_id")
     private User doctor;
 
@@ -51,16 +51,21 @@ public class Case {
     @Column(length = 2000)
     private String detailedDiagnosis;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_id")
     private Rate rate;
 
-    public Case() {
-    }
+    private boolean closure;
+
+    private boolean requiresSecondOpinion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="consulter_id")
+    private User consultingDoctor;
 
     public Case(Long id, User patient, User doctor, String complaint,
                          LocalDate date, Double height,
@@ -90,6 +95,7 @@ public class Case {
         this.department = builder.department;
         this.summaryDiagnosis = builder.summaryDiagnosis;
         this.detailedDiagnosis = builder.detailedDiagnosis;
+        this.requiresSecondOpinion = builder.requiresSecondOpinion;
     }
 
     public static class Builder {
@@ -104,6 +110,7 @@ public class Case {
         private String department;
         private String summaryDiagnosis;
         private String detailedDiagnosis;
+        private boolean requiresSecondOpinion;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -161,6 +168,11 @@ public class Case {
 
         public Builder setDetailedDiagnosis() {
             this.detailedDiagnosis = null;
+            return this;
+        }
+
+        public Builder setRequiresSecondOpinion(boolean opinion) {
+            this.requiresSecondOpinion = opinion;
             return this;
         }
 

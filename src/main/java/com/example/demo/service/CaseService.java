@@ -8,8 +8,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 
 import javax.print.Doc;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +41,9 @@ public class CaseService {
     @Autowired
     private RateRepository rateRepository;
 
+    @Autowired
+    private LocalFileService localFileService;
+
     @Transactional
     public Long handleTemporaryFile(Long caseId, Long docId) {
         TemporaryFile temporaryFile = temporaryFileRepository.findById(caseId)
@@ -46,6 +52,12 @@ public class CaseService {
         User doctor = userRepository.findById(docId)
                 .orElseThrow(() -> new RuntimeException("Doctor not found for ID: " + docId));
 
+        Doctor doctorType = doctorRepository.findById(doctor.getId())
+                .orElseThrow(() -> new RuntimeException("Doctor not found for ID: " + docId));
+        boolean requestOpinion = false;
+        if(doctorType.getDoctorType()%2 ==0) {
+            requestOpinion = true;
+        }
 
         Case newCase = new Case.Builder()
                 .setId(temporaryFile.getId())
@@ -59,6 +71,7 @@ public class CaseService {
                 .setDepartment(temporaryFile.getDepartment())
                 .setDetailedDiagnosis()
                 .setSummaryDiagnosis()
+                .setRequiresSecondOpinion(requestOpinion)
                 .build();
 
         caseRepository.save(newCase);
@@ -91,22 +104,26 @@ public class CaseService {
         }
     }
 
-
-    @Transactional
     public CaseDetailDTO getCaseDetail(Long id) {
         Case caseDetail = caseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("TemporaryFile kaydı bulunamadı"));
+                .orElseThrow(() -> new RuntimeException("Case kaydı bulunamadı"));
 
 
         List<FileDocument> documents = fileDocumentRepository.findByFileIdAndType(id, "document");
 
         List<FileDocumentDTO> documentDTOs = documents.stream()
-                .map(doc -> new FileDocumentDTO(
-                        doc.getId(),
-                        doc.getFileId(),
-                        doc.getType(),
-                        doc.getFileData()
-                ))
+                .map(doc -> {
+                    try {
+                        return new FileDocumentDTO(
+                                doc.getId(),
+                                doc.getFileId(),
+                                doc.getType(),
+                                Base64.getEncoder().encodeToString(StreamUtils.copyToByteArray(localFileService.loadFileAsResource(doc.getFileData()).getInputStream()))
+                        );
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
 
         CaseDetailDTO detailDTO = new CaseDetailDTO();
@@ -117,6 +134,7 @@ public class CaseService {
         detailDTO.setKnownConditions(caseDetail.getKnownConditions());
         detailDTO.setDepartment(caseDetail.getDepartment());
         detailDTO.setDocuments(documentDTOs);
+        detailDTO.setRequiresSecondOpinion(caseDetail.isRequiresSecondOpinion());
 
         return detailDTO;
     }

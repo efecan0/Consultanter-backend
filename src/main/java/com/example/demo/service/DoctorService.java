@@ -69,15 +69,14 @@ public class DoctorService {
     }
 
     public void makeDiagnosis(Long caseId , CaseDiagnosisDtoIU caseDiagnosisDtoIU , Long sessionId){
-        Case dbCase = caseRepository.findById(caseId).orElseThrow(() -> new RuntimeException("Dosya Kaydı Bulunamadı."));
+        Case dbCase = caseRepository.findById(caseId).orElseThrow(() -> new RuntimeException("There is no file case."));
 
         if(dbCase.getDoctor().getId() == sessionId){
             BeanUtils.copyProperties(caseDiagnosisDtoIU,dbCase);
             caseRepository.save(dbCase);
             return;
         }
-        throw new RuntimeException("Dosyanın sahibi bu doktor değil.");
-
+        throw new RuntimeException("You don't have permission to perform the file.");
     }
 
 
