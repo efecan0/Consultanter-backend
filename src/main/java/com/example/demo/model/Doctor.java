@@ -30,11 +30,13 @@ public class Doctor extends User {
     private String degreePhoto;
 
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Rate> rates = new ArrayList<>();
+
+    private Long reviewedCase;
 
     public Doctor() {
     }
@@ -51,6 +53,7 @@ public class Doctor extends User {
         this.degreePhoto = degreePhoto;
         this.certificatePhoto = certificatePhoto;
         this.taxPlate = taxPlate;
+        this.reviewedCase = 0L;
     }
 
 
@@ -162,4 +165,8 @@ public class Doctor extends User {
     }
 
     public void setDoctorType(int doctorType) { this.doctorType = doctorType;}
+
+    public void incrementReviewedCase() {
+        this.reviewedCase += 1;
+    }
 }

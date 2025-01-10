@@ -70,6 +70,8 @@ public class Case {
     @JoinColumn(name="consulter_id")
     private User consultingDoctor;
 
+    private String consultText;
+
     public Case(Long id, User patient, User doctor, String complaint,
                          LocalDate date, Double height,
                          Double weight, String knownConditions, String department) {

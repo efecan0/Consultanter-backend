@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 
 import com.example.demo.DTO.*;
+import com.example.demo.model.Complaint;
 import com.example.demo.model.Department;
 import com.example.demo.model.Doctor;
 import com.example.demo.service.*;
@@ -39,6 +40,9 @@ public class AdminController {
 
     @Autowired
     private LocalFileService localFileService;
+
+    @Autowired
+    private ComplaintService complaintService;
 
     @GetMapping("/doctors/pending-approval")
     public ResponseEntity<Map<String, Object>> getDoctorsAwaitingApproval() {
@@ -143,6 +147,11 @@ public class AdminController {
             TemporaryFileDetailDTO detailDTO = temporaryFileService.getTemporaryFileDetail(id);
             return ResponseEntity.ok(detailDTO);
 
+    }
+
+    @GetMapping("/complaints")
+    public List<Complaint> getAdminComplaints() {
+        return complaintService.getAdminAllComplaint();
     }
 
 

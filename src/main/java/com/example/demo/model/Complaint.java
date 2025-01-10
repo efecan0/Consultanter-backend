@@ -18,10 +18,17 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User complaintUser;
+
     private String text;
 
+    private boolean closed;
 
-    @OneToMany
-    private List<Message> messages = new ArrayList<>();
+    public Complaint(String text, User user) {
+        this.text = text;
+        this.complaintUser = user;
+        this.closed = false;
+    }
 
 }

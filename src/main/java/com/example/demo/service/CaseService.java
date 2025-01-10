@@ -180,4 +180,33 @@ public class CaseService {
         throw new RuntimeException("Dosyanın sahibi bu kullanıcı değil.");
     }
 
+    @Transactional
+    public void reviewCase(CaseReviewDTO caseReview, Long sessionId) {
+        Case updatedCase = caseRepository.findById(caseReview.getCaseId()).orElseThrow(() -> new RuntimeException("There is no available case"));
+        Doctor doctor = doctorRepository.findById(sessionId).orElseThrow(() -> new RuntimeException("There is no doctor according to sessionId"));
+        doctor.incrementReviewedCase();
+
+        if(caseReview.isReviewResult()) {
+            User user = userRepository.findById(sessionId).orElseThrow(() -> new RuntimeException("There is no user"));
+            updatedCase.setConsultingDoctor(user);
+        } else {
+            updatedCase.setConsultText(caseReview.getReviewText());
+            updatedCase.setSummaryDiagnosis("");
+        }
+
+        caseRepository.save(updatedCase);
+    }
+
+    public List<WebSocketDepartmentCaseDTO> getNeededReviewCase() {
+
+        return caseRepository.findNeededReviewDepartmentCases().stream()
+                .map(caseFile -> new WebSocketDepartmentCaseDTO(
+                        caseFile.getId(),
+                        caseFile.getComplaint(),
+                        caseFile.getDate(),
+                        caseFile.getDepartment()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

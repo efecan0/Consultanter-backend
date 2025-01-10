@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -19,5 +16,16 @@ public class Message {
     private Long id;
 
     private String message;
+
+    private Complaint complaintId;
+
+    @Column(insertable=false, updatable=false, name = "user_type")
+    private String userType;
+
+    public Message(String message, Complaint complaintId, String userType) {
+        this.message = message;
+        this.complaintId = complaintId;
+        this.userType = userType;
+    }
 
 }

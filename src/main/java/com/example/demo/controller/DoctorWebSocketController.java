@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.DTO.CaseIdMessageDTO;
-import com.example.demo.DTO.TemporaryFileDTO;
-import com.example.demo.DTO.WebSocketDepartmentTemporaryFileDTO;
-import com.example.demo.DTO.WebSocketDoctorResponse;
+import com.example.demo.DTO.*;
 import com.example.demo.service.CaseService;
 import com.example.demo.service.TemporaryFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,7 @@ public class DoctorWebSocketController {
         Long id = message.getId();
 
         Long returnId =caseService.handleTemporaryFile(id, userId);
+
         return new WebSocketDoctorResponse(returnId);
     }
 
@@ -60,6 +58,29 @@ public class DoctorWebSocketController {
             messagingTemplate.convertAndSend("/topic/doctor/" + department, files);
         });
     }
+
+    @MessageMapping("/consultant/department/{departmentName}")
+    @SendTo("/topic/consultant/department/{departmentName")
+    public CaseReviewDTO consultantCase(@Payload CaseReviewDTO caseReview, SimpMessageHeaderAccessor headerAccessor) {
+        caseService.reviewCase(caseReview, (Long) headerAccessor.getSessionAttributes().get("userId"));
+
+        return caseReview;
+    }
+
+    @Scheduled(fixedRate =  300000)
+    public void sendNeededReviewCases() {
+        List<WebSocketDepartmentCaseDTO> cases = caseService.getNeededReviewCase();
+
+        Map<String, List<WebSocketDepartmentCaseDTO>> departments = cases.stream()
+                .collect(Collectors.groupingBy(
+                        WebSocketDepartmentCaseDTO::getDepartment
+                ));
+
+        departments.forEach((department, files) -> {
+            messagingTemplate.convertAndSend("/topic/consultant/doctor/" + department, files);
+        });
+    }
+
 
 
 }
