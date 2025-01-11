@@ -3,8 +3,6 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +17,7 @@ public class Complaint {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "complaint_user_id")
     private User complaintUser;
 
     private String text;

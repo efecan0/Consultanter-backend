@@ -17,6 +17,8 @@ public class Message {
 
     private String message;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "complaint_id")
     private Complaint complaintId;
 
     @Column(insertable=false, updatable=false, name = "user_type")

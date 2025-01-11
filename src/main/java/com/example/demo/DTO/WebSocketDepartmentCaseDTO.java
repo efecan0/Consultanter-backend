@@ -20,5 +20,4 @@ public class WebSocketDepartmentCaseDTO {
     private LocalDate date;
 
     private String department;
-
 }

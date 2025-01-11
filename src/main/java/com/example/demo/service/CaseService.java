@@ -209,4 +209,8 @@ public class CaseService {
                 .collect(Collectors.toList());
     }
 
+    public List<WebSocketDepartmentCaseDTO> getDepartmentNeededReviewCase(String department) {
+        return caseRepository.findDepartmentNeededReviewDepartmentCases(department);
+    }
+
 }

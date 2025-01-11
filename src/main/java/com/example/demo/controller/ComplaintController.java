@@ -28,10 +28,10 @@ public class ComplaintController {
     public ResponseEntity<Map<String, Object>> createComplaint(@RequestBody String text) {
         Map<String, Object> response = new HashMap<>();
 
-        Complaint returnedComplaint = complaintService.createComplaint(text);
+        //Complaint returnedComplaint = complaintService.createComplaint(text);
 
         response.put("success", "true");
-        response.put("message", returnedComplaint);
+        response.put("message", "returnedComplaint");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

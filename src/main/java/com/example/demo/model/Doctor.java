@@ -29,7 +29,6 @@ public class Doctor extends User {
 
     private String degreePhoto;
 
-
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 

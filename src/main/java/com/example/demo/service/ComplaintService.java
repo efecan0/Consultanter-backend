@@ -56,7 +56,7 @@ public class ComplaintService {
     }
 
     public List<Message> getAllMessages(Long complaintId) {
-        return messageRepository.findByComplaintId(complaintId);
+        return messageRepository.findByComplaintId_Id(complaintId);
     }
 
     public List<Complaint> getAllComplaint(Long userId) {
