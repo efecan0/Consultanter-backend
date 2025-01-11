@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,10 +24,14 @@ public class Case {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
+    @ToString.Exclude
     private User patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="doctor_id")
+    @JsonIgnore
+    @ToString.Exclude
     private User doctor;
 
     @Column(nullable = false)
@@ -54,10 +59,14 @@ public class Case {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
+    @JsonIgnore
+    @ToString.Exclude
     private Comment comment;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rate_id")
+    @JsonIgnore
+    @ToString.Exclude
     private Rate rate;
 
     private Date meetingDate;
@@ -68,6 +77,8 @@ public class Case {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="consulter_id")
+    @JsonIgnore
+    @ToString.Exclude
     private User consultingDoctor;
 
     private String consultText;

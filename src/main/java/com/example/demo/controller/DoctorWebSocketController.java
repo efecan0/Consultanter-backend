@@ -60,7 +60,7 @@ public class DoctorWebSocketController {
     }
 
     @MessageMapping("/consultant/department/{departmentName}")
-    @SendTo("/topic/consultant/department/{departmentName")
+    @SendTo("/topic/consultant/department/{departmentName}")
     public CaseReviewDTO consultantCase(@Payload CaseReviewDTO caseReview, SimpMessageHeaderAccessor headerAccessor) {
         caseService.reviewCase(caseReview, (Long) headerAccessor.getSessionAttributes().get("userId"));
 

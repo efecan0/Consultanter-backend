@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,10 +19,11 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "complaint_user_id")
+    @JsonIgnore
     private User complaintUser;
-
     private String text;
 
     private boolean closed;

@@ -25,38 +25,44 @@ public class ComplaintController {
     private ComplaintService complaintService;
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createComplaint(@RequestBody String text) {
+    public ResponseEntity<Map<String, Object>> createComplaint(@RequestBody Map<String,String> complaint, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        //Complaint returnedComplaint = complaintService.createComplaint(text);
+        Long userId = (Long) session.getAttribute("userId");
 
-        response.put("success", "true");
-        response.put("message", "returnedComplaint");
+        Complaint returnedComplaint = complaintService.createComplaint(complaint.get("message"), userId);
+
+        response.put("success", true);
+        response.put("message", returnedComplaint.getText());
+        response.put("id", returnedComplaint.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/close/{id}")
-    public ResponseEntity<Map<String, Object>> setComplaintToClose(@DestinationVariable("id") Long id) {
+    public ResponseEntity<Map<String, Object>> setComplaintToClose(@PathVariable("id") Long id) {
         Map<String, Object> response = new HashMap<>();
 
         complaintService.setComplaintStatusToClose(id);
 
-        response.put("success", "true");
+        response.put("success", true);
         response.put("message", "confirmed");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/messages/{id}")
-    public List<Message> getComplaintMessages(@DestinationVariable("id") Long id) {
-        return complaintService.getAllMessages(id);
+    public List<Message> getComplaintMessages(@PathVariable("id") Long id) {
+        List<Message> msg =complaintService.getAllMessages(id);
+        return msg;
     }
 
     @GetMapping("/myComplaints")
     public List<Complaint> getMyComplaints(HttpSession session){
         Long id = (Long) session.getAttribute("userId");
 
-        return complaintService.getAllComplaint(id);
+        List<Complaint> complaints =complaintService.getAllComplaint(id);
+
+        return complaints;
     }
 
 }

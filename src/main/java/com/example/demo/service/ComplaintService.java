@@ -28,11 +28,7 @@ public class ComplaintService {
 
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no user"));
 
-        Complaint savedComplaint = new Complaint(text, user);
-
-        complaintRepository.save(savedComplaint);
-
-        return savedComplaint;
+        return complaintRepository.save(new Complaint(text, user));
     }
 
     @Transactional
@@ -61,7 +57,8 @@ public class ComplaintService {
 
     public List<Complaint> getAllComplaint(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("There is no user"));
-        return complaintRepository.findByComplaintUser(user);
+        List<Complaint> complaints =complaintRepository.findByComplaintUser(user);
+        return complaints;
     }
 
     public List<Complaint> getAdminAllComplaint() {

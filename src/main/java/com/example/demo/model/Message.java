@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "complaintId")
 public class Message {
 
     @Id
@@ -19,9 +21,10 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "complaint_id")
+    @JsonIgnore
     private Complaint complaintId;
 
-    @Column(insertable=false, updatable=false, name = "user_type")
+    @Column(updatable=false, name = "user_type")
     private String userType;
 
     public Message(String message, Complaint complaintId, String userType) {

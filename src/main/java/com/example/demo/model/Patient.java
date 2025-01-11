@@ -1,12 +1,10 @@
 package com.example.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -22,6 +20,8 @@ public class Patient extends User {
 
     @OneToOne
     @JoinColumn(name = "id")
+    @JsonIgnore
+    @ToString.Exclude
     private User user;
 
     public Patient(){

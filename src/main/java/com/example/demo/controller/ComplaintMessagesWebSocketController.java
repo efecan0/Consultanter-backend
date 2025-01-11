@@ -19,12 +19,13 @@ public class ComplaintMessagesWebSocketController {
     private ComplaintService complaintService;
 
     @MessageMapping("/complaint/{id}")
-    @SendTo("/app/complaint/{id}")
-    public Message sendAMessage(@Payload String text, @DestinationVariable("id") Long id, SimpMessageHeaderAccessor headerAccessor) {
+    @SendTo("/topic/complaint/{id}")
+    public String sendAMessage(@Payload String text, @DestinationVariable("id") Long id, SimpMessageHeaderAccessor headerAccessor) {
 
         Message sentMessage = complaintService.sendMessage(text, id, (String) headerAccessor.getSessionAttributes().get("userType"));
 
-        return sentMessage;
+        String msg =sentMessage.toString();
+        return msg;
     }
 
 }

@@ -1,7 +1,9 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ public class Doctor extends User {
 
     @OneToOne
     @JoinColumn(name = "id")
+    @JsonIgnore
+    @ToString.Exclude
     private User user;
 
     private String profilePhoto;
@@ -30,9 +34,13 @@ public class Doctor extends User {
     private String degreePhoto;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ToString.Exclude
     private List<Rate> rates = new ArrayList<>();
 
     private Long reviewedCase;
