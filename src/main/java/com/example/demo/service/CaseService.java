@@ -135,6 +135,8 @@ public class CaseService {
         detailDTO.setDepartment(caseDetail.getDepartment());
         detailDTO.setDocuments(documentDTOs);
         detailDTO.setRequiresSecondOpinion(caseDetail.isRequiresSecondOpinion());
+        detailDTO.setDetailedDiagnosis(caseDetail.getDetailedDiagnosis());
+        detailDTO.setSummaryDiagnosis(caseDetail.getSummaryDiagnosis());
 
         return detailDTO;
     }
@@ -209,8 +211,13 @@ public class CaseService {
                 .collect(Collectors.toList());
     }
 
-    public List<WebSocketDepartmentCaseDTO> getDepartmentNeededReviewCase(String department) {
-        return caseRepository.findDepartmentNeededReviewDepartmentCases(department);
+    public List<WebSocketDepartmentCaseDTO> getDepartmentNeededReviewCase(Long doctorId) {
+        Doctor doctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new RuntimeException("Doktor bulunamadı"));
+
+        String doctorDepartment = doctor.getSpecialization();
+
+        return caseRepository.findDepartmentNeededReviewDepartmentCases(doctorDepartment);
     }
 
 }

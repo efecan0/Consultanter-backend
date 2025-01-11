@@ -106,6 +106,15 @@ public class DoctorController {
     }
 
 
+    @GetMapping("/reviewCases")
+    public List<WebSocketDepartmentCaseDTO> getReviewCases(HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        return caseService.getDepartmentNeededReviewCase(userId);
+
+    }
+
 
 
 
