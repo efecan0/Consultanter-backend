@@ -1,5 +1,6 @@
 package com.example.demo.DTO;
 
+import com.example.demo.model.User;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -32,6 +34,13 @@ public class CaseDetailDTO {
     private String detailedDiagnosis;
 
     private boolean requiresSecondOpinion;
+
+    private String consultText;
+
+    private String consultingDoctor;
+
+    private Date meetingDate;
+
 
     private List<FileDocumentDTO> documents;
 

@@ -137,6 +137,12 @@ public class CaseService {
         detailDTO.setRequiresSecondOpinion(caseDetail.isRequiresSecondOpinion());
         detailDTO.setDetailedDiagnosis(caseDetail.getDetailedDiagnosis());
         detailDTO.setSummaryDiagnosis(caseDetail.getSummaryDiagnosis());
+        detailDTO.setConsultText(caseDetail.getConsultText());
+        detailDTO.setMeetingDate(caseDetail.getMeetingDate());
+        if(caseDetail.getConsultingDoctor() != null) {
+            detailDTO.setConsultingDoctor(caseDetail.getConsultingDoctor().getName());
+        }
+
 
         return detailDTO;
     }

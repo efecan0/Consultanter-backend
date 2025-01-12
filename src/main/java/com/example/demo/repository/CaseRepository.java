@@ -26,7 +26,9 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
 
     @Query("SELECT new com.example.demo.DTO.WebSocketDepartmentCaseDTO(c.id, c.complaint, c.date, c.department) " +
             "FROM Case c " +
-            "WHERE c.requiresSecondOpinion = true AND c.summaryDiagnosis IS NOT NULL AND c.department = :department")
+            "WHERE c.requiresSecondOpinion = true AND c.summaryDiagnosis IS NOT NULL AND c.department = :department " +
+            "AND c.meetingDate IS NULL AND NOT ((c.consultingDoctor IS NOT NULL AND c.consultText IS NULL) OR (c.consultingDoctor IS NULL AND c.consultText IS NOT NULL))"
+    )
     List<WebSocketDepartmentCaseDTO> findDepartmentNeededReviewDepartmentCases(@Param("department") String department);
 
 

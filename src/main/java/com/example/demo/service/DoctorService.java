@@ -75,6 +75,8 @@ public class DoctorService {
             dbCase.setSummaryDiagnosis(caseDiagnosisDtoIU.getSummaryDiagnosis());
             dbCase.setDetailedDiagnosis(caseDiagnosisDtoIU.getDetailedDiagnosis());
             dbCase.setMeetingDate(caseDiagnosisDtoIU.getMeetingDate());
+            dbCase.setConsultText(null);
+            dbCase.setConsultingDoctor(null);
             caseRepository.save(dbCase);
             return;
         }
