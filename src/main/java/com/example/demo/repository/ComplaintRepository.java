@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ComplaintRepository extends  JpaRepository<Complaint, Long>{
-    public List<Complaint> findByComplaintUser(User user);
+    public List<Complaint> findByComplaintUserAndClosedFalse(User user);
+
+    public List<Complaint> findByClosedFalse();
 }
-
-
-

@@ -57,12 +57,12 @@ public class ComplaintService {
 
     public List<Complaint> getAllComplaint(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("There is no user"));
-        List<Complaint> complaints =complaintRepository.findByComplaintUser(user);
+        List<Complaint> complaints =complaintRepository.findByComplaintUserAndClosedFalse(user);
         return complaints;
     }
 
     public List<Complaint> getAdminAllComplaint() {
-        return complaintRepository.findAll();
+        return complaintRepository.findByClosedFalse();
     }
 
 }

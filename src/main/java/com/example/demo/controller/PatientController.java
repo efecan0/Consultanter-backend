@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.CaseDetailDTO;
 import com.example.demo.DTO.PatientDtoIU;
 import com.example.demo.DTO.PatientUserFullDTO;
 import com.example.demo.DTO.TemporaryFileDTO;
 import com.example.demo.model.Patient;
+import com.example.demo.service.CaseService;
 import com.example.demo.service.PatientService;
 import com.example.demo.service.TemporaryFileService;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +32,9 @@ public class PatientController {
 
     @Autowired
     private TemporaryFileService temporaryFileService;
+
+    @Autowired
+    private CaseService caseService;
 
     @PostMapping("/createFile")
     public ResponseEntity<TemporaryFileDTO> createTemporaryFile(@Valid @RequestBody TemporaryFileDTO temporaryFileDTO, HttpSession session) {
@@ -81,7 +86,13 @@ public class PatientController {
     }
 
 
+    @GetMapping("/case/{id}/detail")
+    public ResponseEntity<?> getCaseDetails(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
 
+        CaseDetailDTO caseDetail = caseService.getCaseDetail(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(caseDetail);
+    }
 
 }
-

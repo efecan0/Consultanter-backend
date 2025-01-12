@@ -177,6 +177,7 @@ public class CaseService {
             rateRepository.save(rate);
 
             dbCase.setRate(rate);
+            dbCase.setClosure(true);
             caseRepository.save(dbCase);
 
             Doctor caseDoctor = doctorRepository.findById(dbCase.getDoctor().getId()).orElseThrow(() -> new RuntimeException("Dosya ile ilgili doktor bulunamadı."));

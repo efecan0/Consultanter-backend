@@ -50,12 +50,12 @@ public class CaseController {
     }
 
     @PostMapping("comment/{id}")
-    public ResponseEntity<Map<String , Object>> commentCase(HttpSession session , @PathVariable("id") Long caseId, @RequestBody String message){
+    public ResponseEntity<Map<String , Object>> commentCase(HttpSession session , @PathVariable("id") Long id, @RequestBody Map<String,String> comment){
         Long sessionId = (Long)session.getAttribute("userId");
         String sessionType = (String)session.getAttribute("userType");
         Map<String , Object> response = new HashMap<>();
         if (sessionType.equals("PATIENT")){
-            caseService.commentCase(sessionId ,caseId , message);
+            caseService.commentCase(sessionId ,id , comment.get("comment"));
 
 
             response.put("success" , true);
@@ -69,12 +69,12 @@ public class CaseController {
     }
 
     @PostMapping("rate/{id}")
-    public ResponseEntity<Map<String , Object>> rateCase(HttpSession session , @PathVariable(name = "id") Long caseId, @RequestBody Short rating){
+    public ResponseEntity<Map<String , Object>> rateCase(HttpSession session , @PathVariable(name = "id") Long id, @RequestBody Map<String,String> rating){
         Long sessionId = (Long)session.getAttribute("userId");
         String sessionType = (String)session.getAttribute("userType");
         Map<String , Object> response = new HashMap<>();
         if (sessionType.equals("PATIENT")){
-            caseService.rateCase(sessionId ,caseId , rating);
+            caseService.rateCase(sessionId ,id , Short.parseShort(rating.get("rating")));
 
             response.put("success" , true);
             response.put("message" , "Rate is succesfully send.");
