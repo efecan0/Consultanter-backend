@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.DTO.DoctorProfileDTO;
 import com.example.demo.DTO.DoctorUserDTO;
 import com.example.demo.DTO.DoctorUserFullDTO;
 import com.example.demo.model.Doctor;
@@ -24,9 +25,21 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     List<DoctorUserDTO> findByAdminApprovalFalse();
 
     @Query("SELECT new com.example.demo.DTO.DoctorUserFullDTO(u.email, u.name, u.surname, u.phone, u.birthDate, " +
-            "u.gender, u.country, u.city, d.specialization, d.adminApproval, d.profilePhoto, d.degreePhoto, d.certificatePhoto, d.taxPlate) " +
+            "u.gender, u.country, u.city, d.specialization, d.adminApproval, d.profilePhoto, d.degreePhoto, d.certificatePhoto, d.taxPlate, d.doctorType) " +
             "FROM Doctor d JOIN d.user u " +
             "WHERE d.id = :id")
     DoctorUserFullDTO findDoctorFullDetailsById(@Param("id") Long id);
+
+
+    /**
+     @Query("SELECT new com.example.demo.dto.DoctorProfileDTO(" +
+     "d.name, d.surname, d.profilePhoto, d.specialization, d.doctorType, " +
+     "COALESCE(r.rating, 0), c.message) " +
+     "FROM Doctor d " +
+     "LEFT JOIN d.rates r " +
+     "LEFT JOIN d.comments c " +
+     "WHERE d.id = :doctorId")
+     DoctorProfileDTO findDoctorProfileByDoctorId(Long doctorId);
+     **/
 
 }

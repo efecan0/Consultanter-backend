@@ -41,6 +41,9 @@ public class TemporaryFileService {
     @Autowired
     private LocalFileService localFileService;
 
+    @Autowired
+    private PatientService patientService;
+
     public TemporaryFileDTO createTemporaryFile(TemporaryFileDTO temporaryFileDTO, Long patientId) {
 
         if (patientId == null) {
@@ -49,6 +52,9 @@ public class TemporaryFileService {
 
         User patient = userRepository.findById(patientId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        patientService.useTicket(patientId);
+
 
         TemporaryFile tempFile = new TemporaryFile.Builder()
                 .setComplaint(temporaryFileDTO.getComplaint())

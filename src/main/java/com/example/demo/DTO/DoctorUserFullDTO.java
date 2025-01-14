@@ -38,7 +38,7 @@ public class DoctorUserFullDTO {
                              LocalDate birthDate, String gender, String country, String city,
                              String specialization, Boolean adminApproval,
                              String profilePhoto, String degreePhoto, String certificatePhoto,
-                             String taxPlate) {
+                             String taxPlate, int doctorType) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -53,6 +53,7 @@ public class DoctorUserFullDTO {
         this.profilePhoto = profilePhoto;
         this.degreePhoto = degreePhoto;
         this.certificatePhoto = certificatePhoto;
+        this.doctorType = doctorType;
     }
 
 }

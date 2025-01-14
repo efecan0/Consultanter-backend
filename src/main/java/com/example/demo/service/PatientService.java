@@ -30,20 +30,21 @@ public class PatientService {
 
     public void updatePatient(Long sessionId , PatientDtoIU patient){
         Patient dbPatient =getPatient(sessionId);
+
         BeanUtils.copyProperties(patient , dbPatient);
         patientRepository.save(dbPatient);
     }
 
     public void buyTicket(Long sessionId , Integer ticketSize){
-            //ticketSize sıfırdan küçük girilirse sıkıntı validationda bakılmalı.
-            if(ticketSize > 0){
-                Patient dbPatient = getPatient(sessionId);
-                ticketSize += dbPatient.getTickets();
-                dbPatient.setTickets(ticketSize);
-                patientRepository.save(dbPatient);
-                return;
-            }
-            throw new RuntimeException("ticket size must be greater than 0");
+        //ticketSize sıfırdan küçük girilirse sıkıntı validationda bakılmalı.
+        if(ticketSize > 0){
+            Patient dbPatient = getPatient(sessionId);
+            ticketSize += dbPatient.getTickets();
+            dbPatient.setTickets(ticketSize);
+            patientRepository.save(dbPatient);
+            return;
+        }
+        throw new RuntimeException("ticket size must be greater than 0");
     }
 
     public void useTicket(Long sessionId){

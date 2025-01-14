@@ -49,7 +49,7 @@ public class PatientController {
         return ResponseEntity.ok(patient);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<Map<String , Object>> updatePatient(@RequestBody PatientDtoIU patient, HttpSession session ){
 
         Long sessionId = (Long)session.getAttribute("userId");
@@ -63,9 +63,9 @@ public class PatientController {
     }
 
     @PostMapping("/buy/ticket")
-    public ResponseEntity<Map<String , Object>> buyTicket(@RequestParam Integer ticketSize , HttpSession session){
+    public ResponseEntity<Map<String , Object>> buyTicket( @RequestBody Map<String,Integer> ticket , HttpSession session){
         Long sessionId = (Long)session.getAttribute("userId");
-        patientService.buyTicket(sessionId , ticketSize);
+        patientService.buyTicket(sessionId , ticket.get("tickets"));
 
         Map<String , Object> response = new HashMap<>();
         response.put("success" , true);
@@ -94,5 +94,8 @@ public class PatientController {
 
         return ResponseEntity.status(HttpStatus.OK).body(caseDetail);
     }
+
+
+
 
 }

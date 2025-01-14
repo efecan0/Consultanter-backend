@@ -41,6 +41,7 @@ public class CaseDetailDTO {
 
     private Date meetingDate;
 
+    private boolean rate;
 
     private List<FileDocumentDTO> documents;
 

@@ -12,6 +12,7 @@ import org.springframework.util.StreamUtils;
 
 import javax.print.Doc;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -142,6 +143,10 @@ public class CaseService {
         if(caseDetail.getConsultingDoctor() != null) {
             detailDTO.setConsultingDoctor(caseDetail.getConsultingDoctor().getName());
         }
+        detailDTO.setRate(false);
+        if(caseDetail.getRate() != null) {
+            detailDTO.setRate(true);
+        }
 
 
         return detailDTO;
@@ -160,6 +165,7 @@ public class CaseService {
             doctorRepository.save(caseDoctor);
 
             dbCase.setComment(comment);
+            dbCase.setClosure(true);
             caseRepository.save(dbCase);
             return;
 
@@ -225,6 +231,31 @@ public class CaseService {
         String doctorDepartment = doctor.getSpecialization();
 
         return caseRepository.findDepartmentNeededReviewDepartmentCases(doctorDepartment);
+    }
+
+    public DoctorProfileDTO findDoctorByCaseId(Long caseId) throws IOException {
+        Long doctorId = caseRepository.findDoctorIdByCaseId(caseId);
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new RuntimeException("doktor bulunamadı."));
+        DoctorProfileDTO doctorProfileDTO = new DoctorProfileDTO();
+        List<Short> rateList = new ArrayList<>();
+        List<String> commentList = new ArrayList<>();
+        Integer rating = 0;
+        for(Rate rate : doctor.getRates()){
+            rateList.add(rate.getRating());
+        }
+        for(Comment comment : doctor.getComments()){
+            commentList.add(comment.getMessage());
+        }
+        doctorProfileDTO.setName(doctor.getName());
+        doctorProfileDTO.setSurname(doctor.getSurname());
+        doctorProfileDTO.setDoctorType(doctor.getDoctorType());
+        doctorProfileDTO.setProfilePhoto( Base64.getEncoder().encodeToString(StreamUtils.copyToByteArray(localFileService.loadFileAsResource(doctor.getProfilePhoto()).getInputStream())));
+        doctorProfileDTO.setSpecialization(doctor.getSpecialization());
+        doctorProfileDTO.setComments(commentList);
+        doctorProfileDTO.setRates(rateList);
+        doctorProfileDTO.setCountry(doctor.getCountry());
+        return doctorProfileDTO;
+
     }
 
 }

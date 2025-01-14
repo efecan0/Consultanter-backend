@@ -11,12 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientDtoIU {
-    private String email;
     private String name;
     private String surname;
-    private String phone;
-    private LocalDate birthDate;
-    private String gender;
     private String country;
     private String city;
 }

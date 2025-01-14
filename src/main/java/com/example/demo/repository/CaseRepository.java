@@ -12,11 +12,14 @@ import java.util.List;
 
 public interface CaseRepository extends JpaRepository<Case, Long> {
 
-    @Query("SELECT new com.example.demo.DTO.CaseProfileDTO(d.id, d.complaint, d.date) FROM Case d WHERE d.patient = :patientId")
+    @Query("SELECT d.doctor.id FROM Case d WHERE d.id = :caseId")
+    Long findDoctorIdByCaseId(@Param("caseId") Long caseId);
+
+    @Query("SELECT new com.example.demo.DTO.CaseProfileDTO(d.id, d.complaint, d.date) FROM Case d WHERE d.patient = :patientId and d.closure = false")
     List<CaseProfileDTO> findMineCasesAsDTOAsPatient(@Param("patientId") User patient);
 
 
-    @Query("SELECT new com.example.demo.DTO.CaseProfileDTO(d.id, d.complaint, d.date) FROM Case d WHERE d.doctor = :doctorId")
+    @Query("SELECT new com.example.demo.DTO.CaseProfileDTO(d.id, d.complaint, d.date) FROM Case d WHERE d.doctor = :doctorId and d.closure = false")
     List<CaseProfileDTO> findMineCasesAsDTOAsDoctor(@Param("doctorId") User doctor);
 
     @Query("SELECT new com.example.demo.DTO.WebSocketDepartmentCaseDTO(c.id, c.complaint, c.date, c.department) " +
