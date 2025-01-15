@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.DTO.CaseProfileDTO;
+import com.example.demo.DTO.DoctorCaseSummaryDTO;
 import com.example.demo.DTO.WebSocketDepartmentCaseDTO;
 import com.example.demo.model.Case;
 import com.example.demo.model.User;
@@ -33,7 +34,6 @@ public interface CaseRepository extends JpaRepository<Case, Long> {
             "AND c.meetingDate IS NULL AND NOT ((c.consultingDoctor IS NOT NULL AND c.consultText IS NULL) OR (c.consultingDoctor IS NULL AND c.consultText IS NOT NULL))"
     )
     List<WebSocketDepartmentCaseDTO> findDepartmentNeededReviewDepartmentCases(@Param("department") String department);
-
 
 }
 

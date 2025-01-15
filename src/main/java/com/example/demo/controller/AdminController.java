@@ -56,6 +56,21 @@ public class AdminController {
 
     }
 
+
+    @GetMapping("/doctors")
+    public ResponseEntity<Map<String, Object>> getDoctorsList() {
+        Map<String, Object> response = new HashMap<>();
+        List<DoctorUserDTO> doctor = doctorService.getActiveDoctorsList();
+
+        response.put("success", true);
+        response.put("data", doctor);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+
+    }
+
+
+
     @GetMapping("/doctorDetailed/{id}")
     public DoctorUserFullDTO getDoctorById(@PathVariable Long id) throws IOException {
 
@@ -69,6 +84,14 @@ public class AdminController {
         return doctorGeneral;
 
     }
+
+    @GetMapping("/doctor/stats")
+    public List<DoctorCaseSummaryDTO> getDoctorByIdForCaseCount() {
+        return doctorService.getDoctorStats();
+    }
+
+
+
 
 
     @PostMapping("/approve/{id}")

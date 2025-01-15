@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.DTO.DoctorCaseSummaryDTO;
 import com.example.demo.DTO.DoctorProfileDTO;
 import com.example.demo.DTO.DoctorUserDTO;
 import com.example.demo.DTO.DoctorUserFullDTO;
@@ -24,11 +25,23 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             "WHERE d.adminApproval = false")
     List<DoctorUserDTO> findByAdminApprovalFalse();
 
+    @Query("SELECT new com.example.demo.DTO.DoctorUserDTO(d.id, u.email, u.name, u.surname) " +
+            "FROM Doctor d JOIN d.user u " +
+            "WHERE d.adminApproval = true")
+    List<DoctorUserDTO> findByAdminApprovalTrue();
+
     @Query("SELECT new com.example.demo.DTO.DoctorUserFullDTO(u.email, u.name, u.surname, u.phone, u.birthDate, " +
             "u.gender, u.country, u.city, d.specialization, d.adminApproval, d.profilePhoto, d.degreePhoto, d.certificatePhoto, d.taxPlate, d.doctorType) " +
             "FROM Doctor d JOIN d.user u " +
             "WHERE d.id = :id")
     DoctorUserFullDTO findDoctorFullDetailsById(@Param("id") Long id);
+
+
+
+    @Query("SELECT new com.example.demo.DTO.DoctorCaseSummaryDTO(d.id, d.name, d.surname, d.reviewedCase, COUNT(c)) " +
+            "FROM Doctor d LEFT JOIN Case c ON d.id = c.doctor.id " +
+            "GROUP BY d.id, d.name, d.surname, d.reviewedCase")
+    List<DoctorCaseSummaryDTO> getDoctorCaseSummaries();
 
 
     /**

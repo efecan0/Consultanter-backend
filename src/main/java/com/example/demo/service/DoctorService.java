@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.CaseDiagnosisDtoIU;
+import com.example.demo.DTO.DoctorCaseSummaryDTO;
 import com.example.demo.DTO.DoctorUserDTO;
 import com.example.demo.DTO.DoctorUserFullDTO;
 import com.example.demo.model.Case;
@@ -43,9 +44,19 @@ public class DoctorService {
         return doctorRepository.findDoctorFullDetailsById(id);
     }
 
+    public List<DoctorCaseSummaryDTO> getDoctorStats() {
+        return doctorRepository.getDoctorCaseSummaries();
+    }
+
     public List<DoctorUserDTO> getDoctorsAwaitingApproval() {
         return doctorRepository.findByAdminApprovalFalse();
     }
+
+
+    public List<DoctorUserDTO> getActiveDoctorsList() {
+        return doctorRepository.findByAdminApprovalTrue();
+    }
+
     public boolean approveDoctor(Long id, String specialization, int doctorType) {
         Optional<Doctor> doctorOpt = doctorRepository.findById(id);
         if (doctorOpt.isPresent()) {

@@ -15,6 +15,7 @@ public class DashboardController {
     @Autowired
     private HttpSession session;
 
+    @GetMapping("/isAdmin")
     public boolean isAdmin() {
         String userType = (String) session.getAttribute("userType");
         return "ADMIN".equals(userType);
@@ -26,11 +27,13 @@ public class DashboardController {
     }
 
 
+    @GetMapping("/isPatient")
     public boolean isPatient() {
         String userType = (String) session.getAttribute("userType");
         return "PATIENT".equals(userType);
     }
 
+    @GetMapping("/isDoctor")
     public boolean isDoctor() {
         String userType = (String) session.getAttribute("userType");
         return "DOCTOR".equals(userType);

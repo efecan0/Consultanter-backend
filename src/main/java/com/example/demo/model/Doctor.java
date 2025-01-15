@@ -174,6 +174,12 @@ public class Doctor extends User {
     public void setDoctorType(int doctorType) { this.doctorType = doctorType;}
 
     public void incrementReviewedCase() {
-        this.reviewedCase += 1;
+        if(this.reviewedCase != null){
+            this.reviewedCase += 1;
+        }else {
+            this.reviewedCase = 0L;
+        }
+
+
     }
 }
